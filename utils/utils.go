@@ -17,6 +17,16 @@ func IsFloat(s string) bool {
 	return false
 }
 
+func IsContainsFunc(x string) bool {
+	arr := []string{"*", "/", "+", "-"}
+	for _, n := range arr {
+		if x == n {
+			return true
+		}
+	}
+	return false
+}
+
 func RpnStrToArr(rpnString string) []string {
 	hoarder := ""                  // Накопитель для сборки/обработки дробных и больших чисел
 	var result []string

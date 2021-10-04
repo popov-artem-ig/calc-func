@@ -25,7 +25,6 @@ func main() {
 		fmt.Println("'"+str+"'")
 
 		rpnArr := utils.RpnStrToArr(str)
-		fmt.Println(rpnArr)
 
 		fmt.Println("calculate...")
 		result, err := calculator.Calc(rpnArr)
@@ -52,7 +51,6 @@ func readInputStr() (string, error) {
 	in := bufio.NewReader(os.Stdin)
 	scanStr, err := in.ReadString('\n')
 	scanStr = strings.TrimSuffix(scanStr, "\n")
-	fmt.Println("replace ',' to '.'...")
 	scanStr = strings.Replace(scanStr, ",", ".", -1)
 	if err != nil {
 		return "", err

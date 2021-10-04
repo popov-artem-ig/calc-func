@@ -24,25 +24,20 @@ func Calc(items []string) (float64, error) {
 }
 
 func processRpn(items []string, stack []string) (float64, error) {
+	// создаем новые массивы для "неизменяемости" наших данных
 	stackOp := stack
 	itemsOp := items
 	res := 0.0
 	var err error
 
-	fmt.Println("-------------------")
-	fmt.Println(items)
-	fmt.Println(stack)
-
 	if utils.IsFloat(itemsOp[0]) {
+		//число
 		stackOp = structures.Push(itemsOp[0], stackOp)
 		itemsOp = itemsOp[1:len(itemsOp)]
-	} else {
+	} else if utils.IsContainsFunc(itemsOp[0]){
 		//обрабатываем оператор
 		var a, b string
 		a, b, stackOp = structures.PopTwo(stackOp)
-		fmt.Println("PopTwo")
-		fmt.Println(a)
-		fmt.Println(b)
 		res, err = evalOperator(itemsOp[0], a, b)
 		stackOp = structures.Push(fmt.Sprintf("%f", res), stackOp)
 		itemsOp = itemsOp[1:len(itemsOp)]
@@ -51,28 +46,29 @@ func processRpn(items []string, stack []string) (float64, error) {
 		res, err = processRpn(itemsOp, stackOp)
 	}
 
-	fmt.Println("res")
-	fmt.Println(res)
-
 	return res, err
 }
 
-func evalOperator(operator, left, right string) (float64, error) {
+/**
+Функция вычисления
+ */
+func evalOperator(operator, a, b string) (float64, error) {
 
-	bf, err := strconv.ParseFloat(right, 64)
-	af, err := strconv.ParseFloat(left, 64)
+	bf, err := strconv.ParseFloat(b, 64)
+	af, err := strconv.ParseFloat(a, 64)
 
 	if err != nil {
 		return 0, err
 	}
 
-	var operate func(x, y float64) float64
-	operate = structures.GetOperation(operator)
+	//получение функции вычисления по оператору
+	var funcOperate func(x, y float64) float64
+	funcOperate = structures.GetOperation(operator)
 
-	if operate != nil {
-		return operate(af, bf), nil
+	if funcOperate != nil {
+		return funcOperate(af, bf), nil
 	} else {
-		return 0, fmt.Errorf("unexpected operator")
+		return 0, fmt.Errorf("Unexpected operator")
 	}
 }
 

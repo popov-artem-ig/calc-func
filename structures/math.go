@@ -1,5 +1,6 @@
 package structures
 
+//high order function
 func GetOperation(operator string) func(x, y float64) float64 {
 	switch operator {
 	case "+":
